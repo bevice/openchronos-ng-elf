@@ -20,7 +20,7 @@ openchronos.txt
 doc
 build
 _build
-cmake-build-debug
+cmake-build-*/
 
 ### make artifacts ###
 config.h

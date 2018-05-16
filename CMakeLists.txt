@@ -21,8 +21,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.2)
-
+set(MSP430_MCU cc430f6137)
+include(toolchains/generic-gcc-msp430.cmake)
 project(openchronos-ng-elf C)
+include_directories(${openchronos-ng-elf_SOURCE_DIR})
 
 set(openchronos_binary_filename "openchronos.elf")
 set(module_config_files
@@ -71,11 +73,12 @@ set(source_files
     modules/accelerometer.c
     modules/buzztest.c
 )
-add_executable(${openchronos_binary_filename} ${source_files})
-target_include_directories(${openchronos_binary_filename} PRIVATE .)
+
+add_msp430_executable("openchronos" ${source_files})
+#target_include_directories(${openchronos_binary_filename} PRIVATE .)
 
 
-find_package(PythonInterp)
+find_package(PythonInterp  2.7 REQUIRED )
 if(NOT PYTHONINTERP_FOUND)
   message(WARNING "Python interpreter not found - Python tools disabled")
 else()
@@ -117,6 +120,12 @@ else()
       DEPENDS
         ${openchronos_binary_filename}
   )
+
+  add_custom_target(tihex
+        DEPENDS
+          ${openchronos_hex_filename}
+  )
+
   add_custom_target(
       radio-install
       COMMAND

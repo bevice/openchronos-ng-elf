@@ -61,10 +61,11 @@ chmod +x msp430-gcc-full-linux-installer-3.5.0.0.run
 sudo apt-get install mspdebug
 ```
 
+Set environment variable MSP430_FIND_ROOT_PATH to the installed msp430-gcc-opensource toolchain:
 Add this to your .profile
 ```
-export MSP430_TI=~/ti/gcc
-export PATH=$PATH:$MSP430_TI/bin
+export MSP430_FIND_ROOT_PATH=~/toolchains/msp430_gcc
+export PATH="${MSP430_FIND_ROOT_PATH}/bin:${PATH}"
 ```
 
 Run the following command to add exports to your current shell (including the dot):
@@ -167,12 +168,14 @@ Compiling the firmware
 ----------------------
 Clone it from GitHub:
 ```
-git clone https://github.com/BenjaminSoelberg/openchronos-ng-elf
+git clone https://github.com/bevice/openchronos-ng-elf
 ```
 
 Setup which modules to compile with:
 ```
-cd openchronos-ng-elf
+mkdir build-dir
+cd build-dir
+cmake /path/to/openchronos-ng-elf
 make config
 ```
 
@@ -181,7 +184,10 @@ Deselect anything saying *EXPERIMENTAL* as they are not fully functioning.
 Build with:<br>
 ```make clean && make```
 
-The newly build firmware is in the binary file *openchronos.elf* and intel format in *openchronos.txt*
+The newly build firmware is in the binary file *openchronos.elf* and intel format in *openchronos.hex*
+
+To build TI Hex format (openchronos.txt): <br>
+```make tihex```
 
 Boot Menu
 ------------------------------------
